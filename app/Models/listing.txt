@@ -1,0 +1,39 @@
+<?php
+
+namespace App\Models;
+
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
+
+// class Listing extends Model
+class Listing
+{
+    // All Listing (Basic Model)
+    public static function all(){
+        return 
+        [
+            [
+                'id' => 1,
+                'title' => "Listing One",
+                'description' => 'Lorem ipsum dolor sit amet consectetur, adipisicing elit. Fuga explicabo dolor iure corrupti vitae omnis, beatae quas nisi maiores cum quisquam sequi atque doloribus ratione iusto blanditiis eum quo provident?'
+            ],
+            [
+                'id' => 2,
+                'title' => "Listing Two",
+                'description' => 'Lorem ipsum dolor sit amet consectetur, adipisicing elit. Fuga explicabo dolor iure corrupti vitae omnis, beatae quas nisi maiores cum quisquam sequi atque doloribus ratione iusto blanditiis eum quo provident?'
+            ],
+        ];
+    }
+
+    // Single Listing (Basic Model)
+    public static function find($id){
+        $listings = self::all();
+
+        foreach($listings as $listing){
+            if($listing['id'] == $id){
+                return $listing;
+            }
+        }
+    }
+    use HasFactory;
+}

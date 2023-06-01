@@ -1,0 +1,327 @@
+Links: 
+    > https://gist.github.com/bradtraversy/b58f74cd863a465068eaeaae1544d9be
+    > https://gist.github.com/bradtraversy/7485f928e3e8f08ee6bccbe0a681a821
+    > https://gist.github.com/bradtraversy/c831baaad44343cc945e76c2e30927b3
+
+Before start: 
+    > In laragon->right_click->quick_app->laravel
+    > npm install
+
+1. Route and Response
+    > response()
+    > response()->header('Content-Type', 'text/plain')
+    > response()->header('custom', 'header');
+
+2. Wildcard (/route/{id})
+
+3.Route Strict
+    > ->where('id', '[0-9]+');
+
+4. dd() = Die Dump Helper
+    > ddd();
+
+5. Request & Query Param (/route?name=John&country=USA)
+    -> $request->name
+    -> $request->country
+
+6. API Route (JSON Format)
+    > domain.test/api/posts
+
+7. View Basic & Passing Data
+     return view(html $view, array $data)
+
+8. Blade Template & Basic Directives
+    > @foreach
+    > @if
+    > @else 
+    > @unless
+    
+9. Create Basic Model
+    > php artisan make:model Listing
+    > Listing::all()
+    > Listing::find($id)
+
+10. Database Setup & Config
+    > username: root
+    > password: myadmin123
+    > database name: laragigs
+
+
+11. Creating Database Migration
+    > Migrations - is a features of Laravel that automatic do creating table and column.
+
+    > Create Migration: php artisan make:migration create_listings_table
+
+    > 2023_05_29_130613_create_listings_table.php
+
+    > MySQL: Laravel offers various data types for MySQL, including string, integer, bigInteger, float, double, decimal, boolean, date, dateTime, time, timestamp, text, longText, and more.
+
+12. Running Migration
+    > run migration: php artisan migrate
+
+13. Database Seeding
+    > seed & factory data means create dummy users
+        - php artisan db:seed
+
+    > php artisan migrate:refresh
+    > php artisan migrate:refresh --seed
+
+14. Create an Eloquent Model
+    > php artisan make:model ModelName
+
+15. Create a Factory
+    > php artisan make:factory ListingFactory
+
+16. Create a Layout & Sections
+    > layout.blade.php
+    > @yield('content')
+    > @extends('layout.blade.php')
+    > @section('content')
+    > @endsection
+    
+    > NOTE: this "@yield('content')" and "@section('content')" should be match
+
+17. Adding the Theme HTML
+    > I download "_laragigs_theme" in this link: https://github.com/bradtraversy/laragigs
+    > public->images
+    > eloquent colletion: $listing->fieldName
+    > asset()
+
+18. Template Partials
+    > @include('folder.file')
+
+19. Single Listing Format
+    > <a href="malto:emails"></a>
+
+
+20. Route Model Binding
+    > $listing = Listing::find($id);
+    > abort(404);
+    > function(Model $listing)
+
+21. Blade Components
+    > view->components
+    > name compoenents should be hypen ex: listing-card.blade.php
+    > How to pass props: @props([''])
+    > access component: <x-name-component listing="hello" :listing="$listing">
+    > $slot = <x-card> Content </x-card>
+
+22. Component Attribute
+    > merge attribute: {{$attribute->merge(['class' => 'value'])}}
+
+23. Tag Component
+    > php: explode(',', $value);
+
+24. Controller
+    > php artisan make:controller ControllerName
+    > make function
+    > in web.php: Route::get(uri, [ControllerName::class, 'function']);
+
+25. Resource Method Naming: Common Resource Routes
+    > index - Show all listing
+    > show - show single listing
+    > create - show form to create new listing
+    > store - store new listing
+    > edit - show form to edit listing
+    > update - update listing
+    > destroy - delete listing
+
+26. Using a Layout Component - general layout on all view of the project
+        >component->layout.blade.php: $slot
+        >listing->index.blade.php: <x-layout>Content</x-layout>
+
+27. Tag Filter
+    > Scope Filter
+    > $request->tag
+    > request('tag');
+    > In model: public function scopeFilter($query)
+    > 'listings' => Listing::latest()->get(),
+    > 'listings' => Listing::filter(request(['tag']))->get(),
+    > if $filter['tag'] ?? false: if "$filter['tag']" is not equal of "false"
+    >  $query->where('tags', 'like', '%' . request('tag') . '%');
+
+28. Search Filter
+    > view->partials->_search
+    > addtional: 'listings' => Listing::filter(request(['tag', 'search']))->get()
+    > in model: if($filter['search'] ?? false)
+    > $query->where('title', 'like', '%' . request('search') . '%');
+    > ->orWhere('description', 'like', '%' . request('search') . '%')
+    > ->orWhere('tags', 'like', '%' . request('search') . '%');
+
+29. Clockwork Package
+    > Clockwork on Chrome extension
+    > composer require itsgoingd/clockwork
+    > inspect->clockwork
+
+30. Create Listing Form
+    > Create new route
+    > create new controller
+    > create new view
+    
+    > Note: when you create route for create form, it should always first algorithim
+
+31. Validation & Store Listing
+    > If have form we always put this: @csrf which prevents cross-site scripting attacks so stop
+        people from being able to have form on thier website to submit to your endpoint
+
+    > Route::post()
+
+    > $formField = $request->validate([fieldForm => rules]);
+    > PS: Avaible form rule are available on documentation
+    > Rule::unique('tablename', 'fieldName');
+    > redirect('/');
+    > @error('fieldName')
+    > If is Valid it can send this data to database
+
+32. Mass Assigment Rule - Add [formField] to fillable property to allow mass assignment on [App\Models\ModelName].
+    > What purpose? For security that some protecttion when send data form database
+    > Model->Listing.php: protected $fillable = [fieldName that to allow fill on database];
+    > Model::unguard(); 
+
+33. Flash Messages -  you can display flash messages to provide temporary feedback or notifications to users. 
+                        Flash messages are typically used to display success messages after a form submission or to show error messages when something goes wrong.
+    > Session::flash('message', 'value');\
+    > with('message', 'Listing Created Successfully');
+    > create view in component
+    > session()->has()
+    > session('sessionName');
+    > layout.blade.php: <x-flash-message />
+
+    > Note: with('success', 'Your message here');
+
+34. Alpine js for messages: https://alpinejs.dev/
+    > flash-message.blade.php
+    > x-data="{var: false}"
+    > x-init
+    > x-init="setTimeout(() => show = false, no-of-minsecond)"
+    > x-show="var"
+
+35. Keep old data in form
+    > create.blade.php
+    > input element: value="{{old('formFieldName')}}"
+
+36. Pagination
+    > ListingController.php: function index
+    > get() to paginate(no_of_item_per_pages)
+    > listing.index
+    > Can use: simplePaginate()
+    > Paginator::useBootstrapFive()
+
+37. File Upload
+    > <form method="POST" action="/listings" enctype="multipart/form-data">
+    > dd($request->file('logo'));
+    > dd($request->file('logo')->store());
+    > storage->App
+    > config->filesystems.php: 'default' => env('FILESYSTEM_DISK', 'public')
+    > add field in database for path: migration folder
+    > $table->string('logo')->nullable()
+    > In controller: if($request->hasFile('logo'))
+    > $formFields['logo'] = $request->file('logo')->store(path, option_if_local_or_public);
+    > php artisan storage:link
+    > listing-card.blade.php
+    > teritary operators: src="{{$listing->logo ? asset('storage/' . $listing->logo) : asset('images/no-image.png')}}"
+    > single listing: show.blade.php
+
+38. Edit Listing
+    > Route::get('/listings/{listing}/edit', [ListingController::class, 'edit']);
+    > action="/listings/{{$listing->id}}"
+    > @method('PUT');
+    > In Controller: $listing->update($formFields);
+
+39. Delete Listing
+    > @method('DELETE');
+    > $listing->delete();
+
+40. User Registration
+    > Route::get('/register', [UserController::class, 'create']);
+    > php artisan make:controller UserController
+    > For confirm passwowrd: name="password_confirmation"
+    > Route::post('/users', [UserController::class, 'store']);
+    > In Controller: 'name' => ['required', 'min:3']
+    > 'password' => 'required|confirmed|min:6'
+    > Convert text to hash password: $formFields['password'] = bcrypt($formFields['password']);
+    > $user = User::create($formFields);
+    > 
+    > auth()->login($user); // After Registration, it can automatic login
+
+41. Auth Link
+    > go to layout.blade.php: @auth
+    > auth()->user()->name (auth()->user()->fieldName)
+
+42. User Logout
+    > Route::post('/logout', [UserController::class, 'logout']);
+    > auth()->logout(); // Remove the authentication information the user session
+    > $request->session()->invalidate(); // Invalidate User Session
+    > $request->session()->regenerateToken(); // regenerateToken user token from @crsf
+
+43. User Login 
+    > Route::post('/users/authenticate', [UserController::class, 'authenticate']);
+    > if(auth()->attempt($formFields))
+    >  $request->session()->regenerate();
+    > return back()->withErrors(['fieldName' => 'Message'])->onlyInput('fieldNameYouWantToShow');
+
+44. Auth & Guest Middleware (Protection for routes)
+    > Route::get('/listings/create', [ListingController::class, 'create'])->"middleware('auth')";
+    > app->Http->Middleware->Authenticate.php
+    > Add route Name: Route::get('/login', [UserController::class, 'login'])->"name('login')";
+    > Route::post('/listings', [ListingController::class, 'store'])->middleware('auth');
+    > Route::get('/listings/{listing}/edit', [ListingController::class, 'edit'])->middleware('auth');
+    > Route::put('/listings/{listing}', [ListingController::class, 'update'])->middleware('auth');
+    > Route::delete('/listings/{listing}', [ListingController::class, 'destroy'])->middleware('auth');
+    > Route::post('/logout', [UserController::class, 'logout'])->middleware('auth');
+    > Route::get('/register', [UserController::class, 'create'])->middleware('guest'); // This can show for guest only like even you already logged, you can search in url the register form so this the solution "middleware('guest')"
+    > app->Providers->RouteServiceProvider.php: public const HOME = '/';
+
+45. Eloquent Relationships (Using database with foreign key)
+    > database->migration->2023_05_29_130613_create_listings_table.php
+    > Add another field for user id with foreign key: $table->foreignId('fieldName')->constrained()->onDelete('cascade');
+    > database->seeders->DatabaseSeeder.php
+    > $user = User::factory()->create([
+          'name' => 'John Doe',
+          'email' => 'doe@email.com',
+      ]);
+    > Listing::factory(6)->create([
+          'user_id' => $user->id,
+      ]);
+    > php artisan migrate:refresh --seed  
+    ------------------------------------------------
+    
+    > app->Http->Model->Listing.php
+    > public function user() belongToUser - Ito ay pag-aari ng mga user?
+    > return $this->belongsTo(modelName_whatBelongTo, 'foreignKeyFieldName');
+    > app->Http->Model->User.php
+    > Check on documentation for Relationships Eloquent methods
+
+46. Tinker Tinkering -  It refers to the interactive shell provided by the framework called Laravel Tinker. 
+                            Tinker allows you to interact with your Laravel application from the command line, giving you the ability to execute code snippets, query the database, and manipulate your application's data.
+
+    > php artisan tinker
+    > \App\Models\Listing::first() - get first listing
+    > \App\Models\Listing::find(id) - get specific listing
+    > \App\Models\Listing::find()->user() - get user data that belong that listing
+    > $user = \App\Models\Listing::first()
+    > $user->listings
+
+47. Add Ownership to Listing
+    > ListingController.php
+    > public function store(Request $request): $formFields['user_id'] = auth()->id();
+    > \App\Models\User::find(2)->listings                                                              
+
+48. Manage Listing Page
+    > Route::get('listings/manage',[ListingController::class, 'manage'])->middleware('auth');
+    > return view('listings.manage', ['listings' => auth()->user()->listings()->get()]);
+
+49. User Authentication
+    > if($listing->user_id != auth()->id())
+    > abort(403, 'Unauthorized Action');
+
+
+
+
+
+
+
+
+
+
+
